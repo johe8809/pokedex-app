@@ -15,9 +15,18 @@ class Pokemon {
         }
       }
     }
+    height = json['height'] != null ? json['height'] as int : null;
+    weight = json['weight'] != null ? json['weight'] as int : null;
     if (json['types'] != null) {
       types = (json['types'] as List<dynamic>)
           .map((dynamic e) => e['type']['name'] as String)
+          .toList();
+    }
+    if (json['stats'] != null) {
+      stats = (json['stats'] as List<dynamic>)
+          .map(
+            (dynamic e) => PokemonStat.fromJson(e as Map<String, dynamic>),
+          )
           .toList();
     }
   }
@@ -25,7 +34,10 @@ class Pokemon {
   int? id;
   String? name;
   String? image;
+  int? height;
+  int? weight;
   List<String>? types;
+  List<PokemonStat>? stats;
 
   String? getImageUrl(Map<String, dynamic> json) {
     if (json['front_default'] != null) {

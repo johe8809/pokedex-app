@@ -21,7 +21,10 @@ class PokemonCard extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: PokemonDetail(pokemon),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: PokemonDetail(pokemon),
+              ),
             ),
           );
         },
@@ -60,26 +63,8 @@ class PokemonCard extends StatelessWidget {
                     Spacing.spacingV4,
                     Wrap(
                       spacing: 8,
-                      children: pokemon.types!
-                          .map(
-                            (String e) => DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: pokemonTypeColors[e],
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(
-                                  e.toUpperCase(),
-                                  style: BodyTextStyle.body2.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                      children:
+                          pokemon.types!.map(PokemonTypeBadge.new).toList(),
                     ),
                   ],
                 ),
