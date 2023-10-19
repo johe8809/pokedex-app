@@ -1,4 +1,4 @@
-part of com.pokedex_app.services;
+part of com.pokedex_app.data.services;
 
 class PokemonService {
   PokemonService._();
@@ -7,7 +7,7 @@ class PokemonService {
 
   Future<List<PokemonType>?> retreivePokemonTypes() async {
     try {
-      Response? response = await Repository.instance.request(
+      Response? response = await PokemonRepository.instance.request(
         path: 'type',
         method: HttpMethod.get,
       );
@@ -31,7 +31,7 @@ class PokemonService {
 
   Future<List<Pokemon>?> retreivePokemonListByType(String type) async {
     try {
-      Response? response = await Repository.instance.request(
+      Response? response = await PokemonRepository.instance.request(
         path: 'type/$type',
         method: HttpMethod.get,
       );
@@ -58,7 +58,7 @@ class PokemonService {
 
   Future<Pokemon?> retreivePokemon(String url) async {
     try {
-      Response? response = await Repository.instance.request(
+      Response? response = await PokemonRepository.instance.request(
         uri: Uri.parse(url),
         method: HttpMethod.get,
       );

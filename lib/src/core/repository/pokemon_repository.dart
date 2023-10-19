@@ -1,9 +1,9 @@
-part of com.pokedex_app.api;
+part of com.pokedex_app.repository;
 
-class Repository {
-  Repository._();
+class PokemonRepository {
+  PokemonRepository._();
 
-  static final Repository instance = Repository._();
+  static final PokemonRepository instance = PokemonRepository._();
   // TODO(yonnathan): set from env
   final String basePath = 'https://pokeapi.co/api/v2';
   final Map<String, String> headers = <String, String>{

@@ -5,7 +5,7 @@ class PokemonList extends StatelessWidget {
     required this.pokemonList,
     super.key,
   });
-  final List<Pokemon>? pokemonList;
+  final List<Pokemon> pokemonList;
 
   @override
   Widget build(BuildContext context) => GridView.count(
@@ -14,7 +14,7 @@ class PokemonList extends StatelessWidget {
         shrinkWrap: true,
         crossAxisCount: 3,
         childAspectRatio: 1 / 0.5,
-        children: pokemonList!
+        children: pokemonList
             .map(
               (Pokemon pokemon) => PokemonCard(pokemon: pokemon),
             )
