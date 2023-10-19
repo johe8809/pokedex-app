@@ -20,7 +20,7 @@ class PokemonService {
           )
           .where(
             (PokemonType element) =>
-                !<String>['unknown', 'shadow'].contains(element.name),
+                !<String>['unknown', 'shadow'].contains(element.name!.value),
           )
           .toList();
       return results;
@@ -29,10 +29,10 @@ class PokemonService {
     }
   }
 
-  Future<List<Pokemon>?> retreivePokemonListByType(String url) async {
+  Future<List<Pokemon>?> retreivePokemonListByType(String type) async {
     try {
       Response? response = await Repository.instance.request(
-        uri: Uri.parse(url),
+        path: 'type/$type',
         method: HttpMethod.get,
       );
 

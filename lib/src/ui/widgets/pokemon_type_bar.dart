@@ -8,7 +8,7 @@ class PokemonTypeBar extends StatelessWidget {
   });
 
   final List<PokemonType>? pokemonTypes;
-  final ValueChanged<int> onChangeType;
+  final ValueChanged<PokemonTypeEnum> onChangeType;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -19,41 +19,39 @@ class PokemonTypeBar extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width,
             child: Wrap(
               spacing: 16,
               runSpacing: 16,
               alignment: WrapAlignment.center,
-              children: List<Widget>.generate(
-                pokemonTypes!.length,
-                (int index) {
-                  PokemonType type = pokemonTypes![index];
-                  return InkWell(
-                    onTap: () {
-                      onChangeType(index);
-                    },
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: pokemonTypeColors[type.name],
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 8,
+              children: pokemonTypes!
+                  .map(
+                    (PokemonType type) => InkWell(
+                      onTap: () {
+                        onChangeType(type.name!);
+                      },
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: pokemonTypeColors[type.name!.value],
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Text(
-                          type.name!.toUpperCase(),
-                          style: BodyTextStyle.body2.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            type.name!.value.toUpperCase(),
+                            style: BodyTextStyle.body2.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  )
+                  .toList(),
             ),
           ),
         ),

@@ -8,22 +8,16 @@ class PokemonList extends StatelessWidget {
   final List<Pokemon>? pokemonList;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-        builder: (_, BoxConstraints constraints) => Wrap(
-          spacing: 32,
-          runSpacing: 32,
-          alignment: WrapAlignment.center,
-          children: List<Widget>.generate(
-            pokemonList!.length,
-            (int index) {
-              Pokemon pokemon = pokemonList![index];
-              return PokemonCard(
-                index: index,
-                pokemon: pokemon,
-                width: (constraints.maxWidth * 0.33) - 32,
-              );
-            },
-          ),
-        ),
+  Widget build(BuildContext context) => GridView.count(
+        crossAxisSpacing: 32,
+        mainAxisSpacing: 32,
+        shrinkWrap: true,
+        crossAxisCount: 3,
+        childAspectRatio: 1 / 0.5,
+        children: pokemonList!
+            .map(
+              (Pokemon pokemon) => PokemonCard(pokemon: pokemon),
+            )
+            .toList(),
       );
 }

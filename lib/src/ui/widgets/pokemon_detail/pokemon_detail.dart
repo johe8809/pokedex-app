@@ -26,12 +26,9 @@ class _PokemonDetailState extends State<PokemonDetail> {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 32, left: 32),
-                  child: IconButton(
-                    splashColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: Navigator.of(context).pop,
+                  child: InkResponse(
+                    onTap: Navigator.of(context).pop,
+                    child: const Icon(Icons.arrow_back),
                   ),
                 ),
               ),

@@ -8,75 +8,73 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late List<PokemonType>? pokemonTypes = <PokemonType>[];
+  late PokemonTypeEnum? pokemonType = PokemonTypeEnum.ice;
 
-  late int currentTypeIndex = 0;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      pokemonTypes = await PokemonService.instance.retreivePokemonTypes() ??
-          <PokemonType>[];
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  Future<void> onChangeType(int index) async {
-    currentTypeIndex = index;
+  Future<void> onChangeType(PokemonTypeEnum type) async {
+    pokemonType = type;
     setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text(
-          'Pokédex',
-          style: DisplayTextStyle.display3.copyWith(
-            fontWeight: FontWeight.w700,
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          title: Text(
+            'Pokédex',
+            style: DisplayTextStyle.display3.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: width * 0.9,
-          margin: EdgeInsets.symmetric(
-            horizontal: width * 0.05,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+            vertical: 32,
           ),
-          child: Column(
-            children: <Widget>[
-              Spacing.spacingV32,
-              PokemonTypeBar(
-                pokemonTypes: pokemonTypes,
-                onChangeType: onChangeType,
-              ),
-              Spacing.spacingV32,
-              if (pokemonTypes!.isNotEmpty)
-                FutureBuilder<List<Pokemon>?>(
-                  future: PokemonService.instance.retreivePokemonListByType(
-                    pokemonTypes![currentTypeIndex].url!,
-                  ),
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<List<Pokemon>?> snapshot,
-                  ) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (snapshot.hasData) {
-                      return PokemonList(pokemonList: snapshot.data);
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-            ],
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: FutureBuilder<List<PokemonType>?>(
+              future: PokemonService.instance.retreivePokemonTypes(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<List<PokemonType>?> snapshot,
+              ) {
+                if (!snapshot.hasError && snapshot.hasData) {
+                  return Column(
+                    children: <Widget>[
+                      PokemonTypeBar(
+                        pokemonTypes: snapshot.data,
+                        onChangeType: onChangeType,
+                      ),
+                      Spacing.spacingV32,
+                      FutureBuilder<List<Pokemon>?>(
+                        future:
+                            PokemonService.instance.retreivePokemonListByType(
+                          pokemonType!.value,
+                        ),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<List<Pokemon>?> snapshot,
+                        ) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (!snapshot.hasError && snapshot.hasData) {
+                            return PokemonList(pokemonList: snapshot.data);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
