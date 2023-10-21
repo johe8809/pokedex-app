@@ -1,4 +1,4 @@
-part of com.pokedex_app.data.providers;
+part of com.pokedex_app.state_management;
 
 FutureProviderFamily<List<Pokemon>?, String> pokemonListProvider =
     FutureProvider.family(

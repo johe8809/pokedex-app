@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../core/core.dart';
-import '../ui-shared/ui_shared.dart';
+import '../shared/ui_shared.dart';
 
 part './pokemon_card.dart';
 part './pokemon_detail/pokemon_about.dart';

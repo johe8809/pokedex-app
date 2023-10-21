@@ -17,13 +17,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    AsyncValue<List<PokemonType>?> pokemonTypes =
-        ref.watch(pokemonTypesProvider);
-    AsyncValue<List<Pokemon>?> pokemonList = ref.watch(
-      pokemonListProvider(
-        pokemonType.value,
-      ),
+    AsyncValue<List<PokemonType>?> pokemonTypes = ref.watch(
+      pokemonTypesProvider,
     );
+    AsyncValue<List<Pokemon>?> pokemonList = ref.watch(
+      pokemonListProvider(pokemonType.value),
+    );
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -39,31 +39,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
           horizontal: MediaQuery.of(context).size.width * 0.05,
           vertical: 32,
         ),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: pokemonTypes.when(
-            data: (List<PokemonType>? data) => Column(
-              children: <Widget>[
-                PokemonTypeBar(
-                  pokemonTypes: data,
-                  onChangeType: onChangeType,
+        child: pokemonTypes.when(
+          data: (List<PokemonType>? data) => Column(
+            children: <Widget>[
+              PokemonTypeBar(
+                pokemonTypes: data,
+                onChangeType: onChangeType,
+              ),
+              Spacing.spacingV32,
+              pokemonList.when(
+                data: (List<Pokemon>? data) => PokemonList(pokemonList: data!),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                Spacing.spacingV32,
-                pokemonList.when(
-                  data: (List<Pokemon>? data) =>
-                      PokemonList(pokemonList: data!),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (_, __) => const SizedBox.shrink(),
-                ),
-              ],
-            ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            error: (_, __) => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
+            ],
           ),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (_, __) => const SizedBox.shrink(),
         ),
       ),
     );

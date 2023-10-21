@@ -1,19 +1,23 @@
-part of com.pokedex_app.data.services;
+part of com.pokedex_app.repository;
 
-class PokemonService {
-  PokemonService._();
+class PokemonRepositoryRest implements PokemonRepository {
+  final String basePath = 'https://pokeapi.co/api/v2';
+  final Map<String, String> headers = <String, String>{
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  };
 
-  static final PokemonService instance = PokemonService._();
-
+  @override
   Future<List<PokemonType>?> retreivePokemonTypes() async {
+    Uri url = Uri.parse('$basePath/type');
     try {
-      Response? response = await PokemonRepository.instance.request(
-        path: 'type',
-        method: HttpMethod.get,
+      Response response = await get(
+        url,
+        headers: headers,
       );
 
       Map<String, dynamic> rawData =
-          jsonDecode(response!.body) as Map<String, dynamic>;
+          jsonDecode(response.body) as Map<String, dynamic>;
       List<PokemonType> results = (rawData['results'] as List<dynamic>)
           .map(
             (dynamic e) => PokemonType.fromJson(e as Map<String, dynamic>),
@@ -29,15 +33,17 @@ class PokemonService {
     }
   }
 
+  @override
   Future<List<Pokemon>?> retreivePokemonListByType(String type) async {
+    Uri url = Uri.parse('$basePath/type/$type');
     try {
-      Response? response = await PokemonRepository.instance.request(
-        path: 'type/$type',
-        method: HttpMethod.get,
+      Response? response = await get(
+        url,
+        headers: headers,
       );
 
       Map<String, dynamic> rawData =
-          jsonDecode(response!.body) as Map<String, dynamic>;
+          jsonDecode(response.body) as Map<String, dynamic>;
 
       List<dynamic> results = (rawData['pokemon'] as List<dynamic>).toList();
       List<Pokemon> pokemonList = await Future.wait(
@@ -56,15 +62,16 @@ class PokemonService {
     }
   }
 
+  @override
   Future<Pokemon?> retreivePokemon(String url) async {
     try {
-      Response? response = await PokemonRepository.instance.request(
-        uri: Uri.parse(url),
-        method: HttpMethod.get,
+      Response? response = await get(
+        Uri.parse(url),
+        headers: headers,
       );
 
       Map<String, dynamic> rawData =
-          jsonDecode(response!.body) as Map<String, dynamic>;
+          jsonDecode(response.body) as Map<String, dynamic>;
 
       return Pokemon.fromJson(rawData);
     } on Exception catch (_) {
