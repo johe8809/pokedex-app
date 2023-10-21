@@ -1,10 +1,9 @@
 part of com.pokedex_app.services;
 
 class PokemonService {
-  PokemonService._();
+  PokemonService(PokemonRepository _repository) : repository = _repository;
 
-  static final PokemonService instance = PokemonService._();
-  PokemonRepository repository = PokemonRepositoryRest();
+  final PokemonRepository repository;
 
   Future<List<PokemonType>?> retreivePokemonTypes() async {
     try {
@@ -17,14 +16,6 @@ class PokemonService {
   Future<List<Pokemon>?> retreivePokemonListByType(String type) async {
     try {
       return repository.retreivePokemonListByType(type);
-    } on Exception catch (_) {
-      rethrow;
-    }
-  }
-
-  Future<Pokemon?> retreivePokemon(String url) async {
-    try {
-      return repository.retreivePokemon(url);
     } on Exception catch (_) {
       rethrow;
     }

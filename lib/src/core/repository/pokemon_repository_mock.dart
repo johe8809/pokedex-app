@@ -1,6 +1,6 @@
 part of com.pokedex_app.repository;
 
-class PokemonRepositoryRest implements PokemonRepository {
+class PokemonRepositoryMock implements PokemonRepository {
   final String basePath = 'https://pokeapi.co/api/v2';
   final Map<String, String> headers = <String, String>{
     'Accept': 'application/json',
@@ -9,15 +9,11 @@ class PokemonRepositoryRest implements PokemonRepository {
 
   @override
   Future<List<PokemonType>?> retreivePokemonTypes() async {
-    Uri url = Uri.parse('$basePath/type');
     try {
-      Response response = await get(
-        url,
-        headers: headers,
-      );
-
+      String responseBody =
+          await rootBundle.loadString('assets/mock/pokemon_api_v2_type.json');
       Map<String, dynamic> rawData =
-          jsonDecode(response.body) as Map<String, dynamic>;
+          jsonDecode(responseBody) as Map<String, dynamic>;
       List<PokemonType> results = (rawData['results'] as List<dynamic>)
           .map(
             (dynamic e) => PokemonType.fromJson(e as Map<String, dynamic>),
@@ -35,27 +31,20 @@ class PokemonRepositoryRest implements PokemonRepository {
 
   @override
   Future<List<Pokemon>?> retreivePokemonListByType(String type) async {
-    Uri url = Uri.parse('$basePath/type/$type');
     try {
-      Response? response = await get(
-        url,
-        headers: headers,
-      );
-
+      String responseBody = await rootBundle
+          .loadString('assets/mock/pokemon_api_v2_list_by_type.json');
       Map<String, dynamic> rawData =
-          jsonDecode(response.body) as Map<String, dynamic>;
+          jsonDecode(responseBody) as Map<String, dynamic>;
 
       List<dynamic> results = (rawData['pokemon'] as List<dynamic>).toList();
       List<Pokemon> pokemonList = await Future.wait(
         results.map(
           (dynamic e) async {
-            Response? response = await get(
-              Uri.parse(e['pokemon']['url'].toString()),
-              headers: headers,
-            );
-
+            String responseBody = await rootBundle
+                .loadString('assets/mock/pokemon_api_v2_pokemon_info.json');
             Map<String, dynamic> rawData =
-                jsonDecode(response.body) as Map<String, dynamic>;
+                jsonDecode(responseBody) as Map<String, dynamic>;
 
             return Pokemon.fromJson(rawData);
           },
