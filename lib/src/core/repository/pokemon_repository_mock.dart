@@ -1,11 +1,9 @@
 part of com.pokedex_app.repository;
 
 class PokemonRepositoryMock implements PokemonRepository {
-  final String basePath = 'https://pokeapi.co/api/v2';
-  final Map<String, String> headers = <String, String>{
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  };
+  PokemonRepositoryMock._();
+
+  static final PokemonRepositoryMock instance = PokemonRepositoryMock._();
 
   @override
   Future<List<PokemonType>?> retreivePokemonTypes() async {

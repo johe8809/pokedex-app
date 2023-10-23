@@ -21,6 +21,7 @@ class PokemonTypeBar extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Wrap(
+              key: const Key('pokemon_type_bar_key'),
               spacing: 16,
               runSpacing: 16,
               alignment: WrapAlignment.center,

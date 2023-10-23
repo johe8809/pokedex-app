@@ -1,6 +1,10 @@
 part of com.pokedex_app.repository;
 
 class PokemonRepositoryRest implements PokemonRepository {
+  PokemonRepositoryRest._();
+
+  static final PokemonRepositoryRest instance = PokemonRepositoryRest._();
+
   final String basePath = 'https://pokeapi.co/api/v2';
   final Map<String, String> headers = <String, String>{
     'Accept': 'application/json',

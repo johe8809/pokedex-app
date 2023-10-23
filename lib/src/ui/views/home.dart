@@ -28,6 +28,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
+          key: const Key('home_view_app_bar_title_key'),
           'Pokédex',
           style: DisplayTextStyle.display3.copyWith(
             fontWeight: FontWeight.w700,
@@ -43,12 +44,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
           data: (List<PokemonType>? data) => Column(
             children: <Widget>[
               PokemonTypeBar(
+                key: const Key('home_view_pokemon_type_bar_key'),
                 pokemonTypes: data,
                 onChangeType: onChangeType,
               ),
               Spacing.spacingV32,
               pokemonList.when(
-                data: (List<Pokemon>? data) => PokemonList(pokemonList: data!),
+                data: (List<Pokemon>? data) => PokemonList(
+                  key: const Key('home_view_pokemon_list_key'),
+                  pokemonList: data!,
+                ),
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
                 ),
