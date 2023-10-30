@@ -10,14 +10,14 @@ class PokemonStat {
   String? name;
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => value.hashCode ^ name.hashCode;
 
   @override
   bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other.runtimeType is PokemonStat && other.toString() == toString();
+    return other is PokemonStat && other.value == value && other.name == name;
   }
 
   @override

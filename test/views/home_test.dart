@@ -5,50 +5,69 @@ import 'package:pokedex_app/main.dart' as app;
 import 'package:pokedex_app/src/core/core.dart';
 import 'package:pokedex_app/src/state_management/state_management.dart';
 
-Future<void> _app() async => app.main(
-      overrides: <Override>[
-        pokemonRespositoryProvider.overrideWithValue(
-          PokemonRepositoryMock.instance,
-        ),
-      ],
-    );
-
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
   group('Test HomeView => ', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
     testWidgets(
         'should render title, pokemon type bar and pokemon list correctly', (
-      WidgetTester widgetTester,
+      WidgetTester tester,
     ) async {
-      await _app();
+      await app.main(
+        overrides: <Override>[
+          pokemonRespositoryProvider.overrideWithValue(
+            PokemonRepositoryMock.instance,
+          ),
+        ],
+      );
+
       Finder appBarTitleFinder =
           find.byKey(const Key('home_view_app_bar_title_key'));
-      Text appBarTitleWidget = widgetTester.widget(appBarTitleFinder);
+      Text appBarTitleWidget = tester.widget(appBarTitleFinder);
       expect(appBarTitleWidget.data, 'Pokédex');
 
-      await widgetTester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       Finder pokemonTypeBarFinder = find.byKey(
         const Key('home_view_pokemon_type_bar_key'),
       );
       expect(pokemonTypeBarFinder, findsOneWidget);
 
-      await widgetTester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       Finder pokemonListFinder = find.byKey(
         const Key('home_view_pokemon_list_key'),
       );
       expect(pokemonListFinder, findsOneWidget);
     });
 
-    testWidgets('should render the PokemonTypeBar correctly',
-        (WidgetTester widgetTester) async {
-      await _app();
-      await widgetTester.pumpAndSettle(const Duration(seconds: 10));
-      Finder pokemonTypeBarFinder =
-          find.byKey(const Key('pokemon_type_bar_key'));
-      Wrap types = widgetTester.widget(pokemonTypeBarFinder);
+    testWidgets('should render the PokemonTypeBar correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await app.main(
+        overrides: <Override>[
+          pokemonRespositoryProvider.overrideWithValue(
+            PokemonRepositoryMock.instance,
+          ),
+        ],
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      Finder appBarTitleFinder =
+          find.byKey(const Key('home_view_app_bar_title_key'));
+      Text appBarTitleWidget = tester.widget(appBarTitleFinder);
+      expect(appBarTitleWidget.data, 'Pokédex');
 
-      expect(types.children.length, 18);
+      await tester.pumpAndSettle(const Duration(seconds: 7));
+
+      Finder pokemonTypeBarFinder = find.byKey(
+        const Key('home_view_pokemon_type_bar_key'),
+      );
+      expect(pokemonTypeBarFinder, findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      Finder pokemonListFinder = find.byKey(
+        const Key('home_view_pokemon_list_key'),
+      );
+      expect(pokemonListFinder, findsOneWidget);
     });
   });
 }

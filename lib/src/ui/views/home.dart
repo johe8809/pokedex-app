@@ -61,10 +61,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
             ],
           ),
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (_, __) => const SizedBox.shrink(),
+          loading: () => const SizedBox.shrink(),
+          error: (Object object, StackTrace stackTrace) =>
+              const SizedBox.shrink(),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-part of com.pokedex_app.typing;
+part of com.pokedex_app.constants;
 
 enum HttpMethod {
   post,

@@ -4,5 +4,5 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/core.dart';
 
-part './pokemon_future_provider.dart';
 part './pokemon_service_provider.dart';
+part './futures/pokemon_future_provider.dart';
