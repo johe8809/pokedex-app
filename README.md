@@ -1,16 +1,37 @@
-# pokedex_app
+# Pokédex App
 
-A new Flutter project.
+This is a Flutter Web application that uses the [PokéAPI](https://pokeapi.co/api/v2) to display information about Pokémon and allows filtering by type.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Display details of Pokémon.
+- Filter Pokémon by type.
+- Includes unit tests.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Screenshot 1](screenshot1.png) | ![Screenshot 2](screenshot2.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Technologies Used
+
+- Flutter Web
+- Dart
+
+## Installation
+
+1. Clone the repository.
+2. Open the project in your preferred code editor.
+3. Run `flutter packages get` to install dependencies.
+
+## Usage
+
+1. Run the application on your browser using the command `flutter run`.
+2. Explore the list of Pokémon and filter by type.
+
+## Testing
+
+This project includes unit tests to ensure proper functionality. To run the tests, use the command:
+
+```bash
+flutter test
+```
